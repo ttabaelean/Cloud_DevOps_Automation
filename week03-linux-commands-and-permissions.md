@@ -4,22 +4,14 @@
 
 ---
 
-
-# LAB 1: SSH 원격 접속 및 시스템 정보 확인
-
-이 문서는 **3주차 LAB 1** 실습 절차를 정리한 가이드입니다.
-
----
-
-## 1. MobaXterm을 이용한 SSH 접속
+## LAB 1: SSH 원격 접속 및 시스템 정보 확인
+### 1. MobaXterm을 이용한 SSH 접속
 - **Session** -> **SSH** 선택 후 접속 정보 설정:
   - **Remote host**: `192.168.100.10`
   - **Specify username**: `admin`
   - **Password**: `admin123!`
 
----
-
-## 2. 시스템 정보 확인 명령어 실행
+### 2. 시스템 정보 확인 명령어 실행
 ```bash
 whoami      # 현재 로그인 사용자 확인
 hostname    # 서버 이름 확인
@@ -32,6 +24,18 @@ free -h     # 메모리 사용량 확인
 
 ---
 
+# LAB 2: 파일 시스템 관리 및 로그 모니터링
+
+## 개발팀 프로젝트 디렉터리 구성 및 실시간 로그 모니터링
+
+### 1. 프로젝트 디렉터리 생성 및 이동
+```bash
+mkdir ~/project
+cd ~/project
+pwd
+```
+
+### 2. 파일 생성
 ```bash
 touch app.log
 touch config.txt
@@ -74,14 +78,9 @@ echo "ERROR: Database Connection Failed" >> app.log
 ```
 > **참고**: `tail -f` 실행 중인 터미널은 `Ctrl + C` 키를 입력하여 종료합니다.
 
-
 ---
 
 # LAB 3: 서비스(Service) 및 데몬(Daemon) 관리
-
-이 문서는 **3주차 LAB 3** 실습 절차를 정리한 가이드입니다.
-
----
 
 ## Apache(httpd) 웹 서버 설치, 서비스 자동 등록 및 방화벽 설정
 
@@ -118,4 +117,5 @@ sudo firewall-cmd --list-all
 
 ### 6. 외부 접속 확인
 - 호스트 PC의 웹 브라우저 주소창에 `http://192.168.100.10` 입력 후 접속을 확인합니다.
+
 
