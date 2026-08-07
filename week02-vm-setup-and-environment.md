@@ -1,4 +1,4 @@
-markdown_content = """# 2주차 Hands-on Labs: 가상 컴퓨터 환경 이해 및 가상머신 구축
+# 2주차 Hands-on Labs: 가상 컴퓨터 환경 이해 및 가상머신 구축
 
 이 문서는 **2주차 강의 자료**에 수록된 가상머신(VM) 생성, OS 설치, 멀티 노드 환경 구축 및 스냅샷 관리 실습 절차를 정리한 가이드입니다.
 
@@ -12,7 +12,7 @@ markdown_content = """# 2주차 Hands-on Labs: 가상 컴퓨터 환경 이해 �
 ### 2. 가상머신(`server1`) 생성 (New Virtual Machine)
 - **CPU 코어 수**: 2
 - **Memory (RAM)**: 4 GiB
-- **Virtual Disk (HDD)**: 10 GB
+- **Virtual Disk (HDD)**: 20 GB
 - **ISO 이미지 매핑**: Rocky Linux ISO 파일 연동
 
 ### 3. 리눅스 운영체제(OS) 설치 및 초기 설정
