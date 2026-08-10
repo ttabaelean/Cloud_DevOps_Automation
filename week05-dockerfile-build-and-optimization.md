@@ -53,10 +53,10 @@
     docker build -t myweb:v1 .
     
     # 빌드 된 이미지를 확인
-    docker image ls
+    docker images myweb:v1
     
     # 이미지의 Layer를 확인
-    docker images myweb:v1
+    docker history myweb:v1
     ```
     
 - **Container 실행**
@@ -64,8 +64,7 @@
     - 포트매핑 : -p 80:80
     
     ```bash
-    docker run -d  --name myweb -p 80:80 \
-      myweb:v1
+    docker run -d  --name myweb -p 80:80 myweb:v1
     
     # 실행 상태 확인
     docker ps
