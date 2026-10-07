@@ -47,9 +47,7 @@
 ### **3단계: 설치 확인**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git --version` : 설치된 Git 버전 확인 (버전이 나오면 설치 완료)
 - `where.exe git` : git 실행 파일이 설치된 위치 확인
@@ -75,9 +73,7 @@
 ### **4단계: PATH 환경변수 확인·설정**
 
 <aside>
-📌
-
-**용어 정리**
+📌**용어 정리**
 
 - `PATH` : 명령어를 입력했을 때 Windows가 프로그램을 찾아보는 폴더 목록
 - `C:\Program Files\Git\cmd` : git.exe가 들어 있는 폴더 (PATH에 있어야 git 명령 사용 가능)
@@ -103,9 +99,7 @@
 ### **5단계: 기본 터미널을 Git Bash로 지정**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `pwd` : 현재 작업 위치(폴더) 출력
 - `ls` : 현재 폴더의 파일 목록 보기
@@ -133,9 +127,7 @@
 ### **6단계: Git 사용자 설정**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git config --global <항목> <값>` : 이 PC의 모든 저장소에 적용되는 Git 설정
 - `user.name` : Commit에 작성자로 표시될 이름 (자유롭게 입력)
@@ -200,9 +192,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **1단계: 실습 폴더와 저장소 생성**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git init` : 현재 폴더를 Git 저장소로 만들기 (`.git` 폴더 생성)
 - `code -r .` : 현재 폴더를 VSCode의 현재 창에서 열기
@@ -235,9 +225,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **2단계: 첫 번째 Commit**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git status` : 파일 상태 확인 (Untracked → Changes to be committed → clean)
 - `git add <파일>` : 파일을 Staging Area에 등록 (다음 Commit에 포함)
@@ -293,9 +281,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **3단계: 파일 수정과 git diff**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git diff` : 아직 Staging하지 않은 변경 내용 비교 (`-` 이전 줄, `+` 바뀐 줄)
 - 참고 : Working Directory(작업 공간) / Staging Area(다음 Commit 목록) / Local Repository(Commit 이력 저장)
@@ -326,9 +312,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **4단계: 새 파일 추가와 이력 확인**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git log` : Commit 이력 자세히 보기 (Commit ID, 작성자, 날짜, 메시지)
 - `git log --oneline` : Commit 이력을 한 줄씩 간단히 보기 (최신 Commit이 맨 위)
@@ -356,9 +340,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **5단계: feature Branch 작업**
 
 <aside>
-📌
-
-**명령어 정리**
+📌 **명령어 정리**
 
 - `git branch <브랜치이름>` : 브랜치 만들기 (이동은 안 함)
 - `git switch <브랜치이름>` : 그 브랜치로 이동
@@ -370,6 +352,8 @@ main branch (index.html) → feature branch(index.html) - marge
 - Branch 생성과 동시에 이동 → 현재 Branch 앞에 `*` 표시
     
     ```bash
+    git branch
+    
     git switch -c feature
     
     git branch
