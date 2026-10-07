@@ -373,9 +373,7 @@ main branch (index.html) → feature branch(index.html) - marge
 ### **6단계: main으로 Merge**
 
 <aside>
-📌
-
-**명령어 정리**
+📌**명령어 정리**
 
 - `git switch main` : main 브랜치로 이동
 - `git merge <브랜치이름>` : 지정한 브랜치의 변경 내용을 현재 브랜치에 합치기
@@ -393,14 +391,7 @@ main branch (index.html) → feature branch(index.html) - marge
     ```bash
     git merge feature
     cat index.html
-    ```
-    
-- Branch 이력 그래프 확인
-    
-    ```bash
-    git log --oneline --graph --all
-    ```
-    
+    ```    
 
 ---
 
