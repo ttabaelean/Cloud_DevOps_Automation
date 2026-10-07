@@ -497,8 +497,8 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
     ```
     
     ```
-    origin  https://github.com/<Username>/kcu-git-lab.git (fetch)
-    origin  https://github.com/<Username>/kcu-git-lab.git (push)
+    origin  https://github.com/<Username>/kcu-git-lab.git (fetch) <- pull, fetch 에 적용되는 주소
+    origin  https://github.com/<Username>/kcu-git-lab.git (push)  <- push에 적용되는 주소
     ```
     
 
@@ -507,16 +507,13 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **3단계: GitHub로 Push (main branch)**
 
-<aside>
-📌
-
-**명령어 정리**
-
+[!NOTE]
+📌**명령어 정리**
 - `git branch -M main` : 현재 브랜치 이름을 main으로 변경 (master인 경우만)
 - `git push -u origin main` : 로컬 main의 Commit을 origin(GitHub)으로 전송 (`-u` : 이 연결을 기억)
 - `git push` : 두 번째부터는 이것만 입력
 - 인증 : 비밀번호 대신 **1단계에서 만든 Personal Access Token** 사용
-</aside>
+
 
 - 현재 Branch가 `main`인지 확인
     
