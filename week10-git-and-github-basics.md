@@ -500,7 +500,7 @@
         <img width="935" height="574" alt="Image" src="https://github.com/user-attachments/assets/13b71ce7-dff2-4251-b69e-506b63d2c5cf" />
         
 
-### **4단계: GitHub에서 확인**
+### **4단계: GitHub 리포지토리에서 push된 파일 확인**
 
 > [!NOTE]
 > 📌 **확인 포인트**
@@ -524,7 +524,7 @@
 > **참고**: 이후에는 `git push`만 입력하면 됩니다.
 > 
 
-### **5단계: Clone**
+### **5단계: github 리포지토리를 로컬 PC로 Clone**
 
 > [!NOTE]
 > 📌**명령어 정리**
@@ -544,7 +544,7 @@
     
 - GitHub의 파일과 Commit 이력이 그대로 복제되었는지 확인
 
-### **6단계: Pull**
+### **6단계: github에서 수정 변경된 파일 Pull**
 
 > [!NOTE]
 > 📌**명령어 정리**
@@ -566,7 +566,7 @@
     ```
     
 
-### **7단계: Branch Push와 Pull Request (feature-contact branch 생성)**
+### **7단계: 로컬에서 새 branch 생성후 push -> github에서 Pull Request 진행**
 
 > [!NOTE]
 > 📌**명령어 정리**
@@ -574,19 +574,22 @@
 > - `git push -u origin feature-contact` : 새 브랜치를 GitHub에 올리기
 > - Pull Request : 내 브랜치를 main에 합쳐 달라고 GitHub에서 검토를 요청하는 기능
 
-- 새 Branch에서 파일 추가 후 GitHub로 Push
+- 새 Branch 생성 - 파일 추가 후 GitHub로 Push
     
     ```bash
     cd ~/kcu-git-lab
+    
     git switch -c feature-contact
+    
     echo "<h1>Contact</h1>" > contact.html
     git add contact.html
     git commit -m "Add contact page"
+
     git push -u origin feature-contact
     ```
     
 - GitHub 저장소 화면 → **[Compare & pull request]**
-    - 새 브랜치 feature-contact를 push하면 github에는 [Compare & pull request]가 표시됨.
+    - [F5 화면 새로고침] -> 새 브랜치 feature-contact를 push하면 github에는 [Compare & pull request]가 표시됨.
     - 이는 현재 브랜치에서 바꾼 내용을 main에 합쳐 달라고 요청서를 만드는 것이다.
     
     <img width="1235" height="249" alt="image" src="https://github.com/user-attachments/assets/cd5772e1-b88c-4a5e-9d22-702e53ad7bad" />
