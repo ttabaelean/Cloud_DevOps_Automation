@@ -70,12 +70,10 @@
 
 ### **4단계: PATH 환경변수 확인·설정**
 
-<aside>
-📌**용어 정리**
-
-- `PATH` : 명령어를 입력했을 때 Windows가 프로그램을 찾아보는 폴더 목록
-- `C:\Program Files\Git\cmd` : git.exe가 들어 있는 폴더 (PATH에 있어야 git 명령 사용 가능)
-</aside>
+> [!NOTE]
+> 📌**용어 정리**
+> - `PATH` : 명령어를 입력했을 때 Windows가 프로그램을 찾아보는 폴더 목록
+> - `C:\Program Files\Git\cmd` : git.exe가 들어 있는 폴더 (PATH에 있어야 git 명령 사용 가능)
 
 > `git`을 찾을 수 없다는 오류가 나올 때만 진행합니다. 3단계에서 버전이 정상 출력되었다면 5단계로 넘어갑니다.
 > 
@@ -96,13 +94,11 @@
 
 ### **5단계: 기본 터미널을 Git Bash로 지정**
 
-<aside>
-📌**명령어 정리**
-
-- `pwd` : 현재 작업 위치(폴더) 출력
-- `ls` : 현재 폴더의 파일 목록 보기
-- `~` : 사용자 홈 폴더 (`C:\Users\사용자이름`)
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `pwd` : 현재 작업 위치(폴더) 출력
+> - `ls` : 현재 폴더의 파일 목록 보기
+> - `~` : 사용자 홈 폴더 (`C:\Users\사용자이름`)
 
 - `Ctrl + Shift + P` → 명령 팔레트에 입력 → **Git Bash** 선택
     
@@ -124,15 +120,13 @@
 
 ### **6단계: Git 사용자 설정**
 
-<aside>
-📌**명령어 정리**
-
-- `git config --global <항목> <값>` : 이 PC의 모든 저장소에 적용되는 Git 설정
-- `user.name` : Commit에 작성자로 표시될 이름 (자유롭게 입력)
-- `user.email` : GitHub 계정과 Commit을 연결하는 기준 (**GitHub 가입 이메일**)
-- `init.defaultBranch main` : 새 저장소를 만들 때 기본 브랜치 이름을 main으로 지정
-- `git config --global --list` : 현재 설정 목록 확인
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git config --global <항목> <값>` : 이 PC의 모든 저장소에 적용되는 Git 설정
+> - `user.name` : Commit에 작성자로 표시될 이름 (자유롭게 입력)
+> - `user.email` : GitHub 계정과 Commit을 연결하는 기준 (**GitHub 가입 이메일**)
+> - `init.defaultBranch main` : 새 저장소를 만들 때 기본 브랜치 이름을 main으로 지정
+> - `git config --global --list` : 현재 설정 목록 확인
 
 - Commit 작성자 정보 등록 (본인 이름과 **GitHub 가입 이메일**로 변경해서 입력)
     
@@ -189,12 +183,10 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **1단계: 실습 폴더와 저장소 생성**
 
-<aside>
-📌**명령어 정리**
-
-- `git init` : 현재 폴더를 Git 저장소로 만들기 (`.git` 폴더 생성)
-- `code -r .` : 현재 폴더를 VSCode의 현재 창에서 열기
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git init` : 현재 폴더를 Git 저장소로 만들기 (`.git` 폴더 생성)
+> - `code -r .` : 현재 폴더를 VSCode의 현재 창에서 열기
 
 - 실습 폴더 생성 및 이동
     
@@ -222,14 +214,12 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **2단계: 첫 번째 Commit**
 
-<aside>
-📌**명령어 정리**
-
-- `git status` : 파일 상태 확인 (Untracked → Changes to be committed → clean)
-- `git add <파일>` : 파일을 Staging Area에 등록 (다음 Commit에 포함)
-- `git rm --cached <파일>` : add 취소 (Staging Area에서만 빼고 파일은 유지)
-- `git commit -m "메시지"` : Staging된 내용을 하나의 버전(Commit)으로 저장
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git status` : 파일 상태 확인 (Untracked → Changes to be committed → clean)
+> - `git add <파일>` : 파일을 Staging Area에 등록 (다음 Commit에 포함)
+> - `git rm --cached <파일>` : add 취소 (Staging Area에서만 빼고 파일은 유지)
+> - `git commit -m "메시지"` : Staging된 내용을 하나의 버전(Commit)으로 저장
 
 - 파일 생성 후 상태 확인 → **Untracked files** (빨간색)
     
@@ -278,12 +268,10 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **3단계: 파일 수정과 git diff**
 
-<aside>
-📌**명령어 정리**
-
-- `git diff` : 아직 Staging하지 않은 변경 내용 비교 (`-` 이전 줄, `+` 바뀐 줄)
-- 참고 : Working Directory(작업 공간) / Staging Area(다음 Commit 목록) / Local Repository(Commit 이력 저장)
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git diff` : 아직 Staging하지 않은 변경 내용 비교 (`-` 이전 줄, `+` 바뀐 줄)
+> - 참고 : Working Directory(작업 공간) / Staging Area(다음 Commit 목록) / Local Repository(Commit 이력 저장)
 
 - `index.html` 내용 수정 (VSCode 편집기에서 직접 수정·저장하거나 아래 명령 실행)
     - 변경 전: `<h1>KCU Cloud DevOps</h1>`
@@ -309,12 +297,10 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **4단계: 새 파일 추가와 이력 확인**
 
-<aside>
-📌**명령어 정리**
-
-- `git log` : Commit 이력 자세히 보기 (Commit ID, 작성자, 날짜, 메시지)
-- `git log --oneline` : Commit 이력을 한 줄씩 간단히 보기 (최신 Commit이 맨 위)
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git log` : Commit 이력 자세히 보기 (Commit ID, 작성자, 날짜, 메시지)
+>  `git log --oneline` : Commit 이력을 한 줄씩 간단히 보기 (최신 Commit이 맨 위)
 
 - 새 파일 추가 후 세 번째 Commit
     
@@ -337,15 +323,13 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **5단계: feature Branch 작업**
 
-<aside>
-📌 **명령어 정리**
-
-- `git branch <브랜치이름>` : 브랜치 만들기 (이동은 안 함)
-- `git switch <브랜치이름>` : 그 브랜치로 이동
-- `git switch -c <브랜치이름>` : 브랜치 생성 후 이동
-- `git branch` : 브랜치 목록 보기 (`*` = 현재 브랜치)
-- `git log --oneline --graph --all` : 모든 브랜치의 Commit 이력을 한 줄씩, 그래프로 보기
-</aside>
+> [!NOTE]
+> 📌 **명령어 정리**
+> - `git branch <브랜치이름>` : 브랜치 만들기 (이동은 안 함)
+> - `git switch <브랜치이름>` : 그 브랜치로 이동
+> - `git switch -c <브랜치이름>` : 브랜치 생성 후 이동
+> - `git branch` : 브랜치 목록 보기 (`*` = 현재 브랜치)
+> - `git log --oneline --graph --all` : 모든 브랜치의 Commit 이력을 한 줄씩, 그래프로 보기
 
 - Branch 생성과 동시에 이동 → 현재 Branch 앞에 `*` 표시
     
@@ -370,12 +354,10 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ### **6단계: main으로 Merge**
 
-<aside>
-📌**명령어 정리**
-
-- `git switch main` : main 브랜치로 이동
-- `git merge <브랜치이름>` : 지정한 브랜치의 변경 내용을 현재 브랜치에 합치기
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git switch main` : main 브랜치로 이동
+> - `git merge <브랜치이름>` : 지정한 브랜치의 변경 내용을 현재 브랜치에 합치기
 
 - main으로 이동 → feature에서 추가한 `New Feature` 줄이 **없음**을 확인
     
@@ -406,16 +388,12 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **1단계: GitHub 준비 (Token 생성 · Repository 생성)**
 
-<aside>
-📌
-
-**용어 정리**
-
-- `Personal Access Token(PAT)` : Git 명령으로 GitHub에 접근할 때 **비밀번호 대신** 사용하는 인증 문자열
-- GitHub는 `git push` 할 때 계정 비밀번호 로그인을 지원하지 않으므로 토큰이 필요함
-- `Scope(권한 범위)` : 토큰으로 할 수 있는 일의 범위 (`repo` : 저장소 읽기·쓰기, `workflow` : GitHub Actions 파일 수정)
-- `Repository` : GitHub에 만드는 프로젝트 저장 공간 (2강의 로컬 저장소를 올릴 빈 저장소)
-</aside>
+> [!NOTE]
+> 📌 **용어 정리**
+> - `Personal Access Token(PAT)` : Git 명령으로 GitHub에 접근할 때 **비밀번호 대신** 사용하는 인증 문자열
+> - GitHub는 `git push` 할 때 계정 비밀번호 로그인을 지원하지 않으므로 토큰이 필요함
+> - `Scope(권한 범위)` : 토큰으로 할 수 있는 일의 범위 (`repo` : 저장소 읽기·쓰기, `workflow` : GitHub Actions 파일 수정)
+> - `Repository` : GitHub에 만드는 프로젝트 저장 공간 (2강의 로컬 저장소를 올릴 빈 저장소)
 
 #### **① Personal Access Token 생성**
 
@@ -470,15 +448,11 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **2단계: 원격 저장소 연결**
 
-<aside>
-📌
-
-**명령어 정리**
-
-- `git remote add origin <주소>` : GitHub 저장소 주소를 `origin`이라는 이름으로 등록
-- `git remote -v` : 등록된 원격 저장소 주소 확인 (fetch · push 2줄)
-- `origin` : 원격 저장소에 관례적으로 붙이는 기본 별명
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git remote add origin <주소>` : GitHub 저장소 주소를 `origin`이라는 이름으로 등록
+> - `git remote -v` : 등록된 원격 저장소 주소 확인 (fetch · push 2줄)
+> - `origin` : 원격 저장소에 관례적으로 붙이는 기본 별명
 
 - 2강에서 만든 저장소로 이동 후 Commit 이력 확인
     
@@ -505,12 +479,12 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **3단계: GitHub로 Push (main branch)**
 
-[!NOTE]
-📌**명령어 정리**
-- `git branch -M main` : 현재 브랜치 이름을 main으로 변경 (master인 경우만)
-- `git push -u origin main` : 로컬 main의 Commit을 origin(GitHub)으로 전송 (`-u` : 이 연결을 기억)
-- `git push` : 두 번째부터는 이것만 입력
-- 인증 : 비밀번호 대신 **1단계에서 만든 Personal Access Token** 사용
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git branch -M main` : 현재 브랜치 이름을 main으로 변경 (master인 경우만)
+> - `git push -u origin main` : 로컬 main의 Commit을 origin(GitHub)으로 전송 (`-u` : 이 연결을 기억)
+> - `git push` : 두 번째부터는 이것만 입력
+> - 인증 : 비밀번호 대신 **1단계에서 만든 Personal Access Token** 사용
 
 
 - 현재 Branch가 `main`인지 확인
@@ -552,14 +526,10 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **4단계: GitHub에서 확인**
 
-<aside>
-📌
-
-**확인 포인트**
-
-- `git log --oneline` 결과의 `origin/main` : GitHub(원격) main이 가리키는 Commit
-- `HEAD -> main, origin/main`이 같은 줄에 있으면 로컬과 GitHub가 같은 상태
-</aside>
+> [!NOTE]
+> 📌 **확인 포인트**
+> - `git log --oneline` 결과의 `origin/main` : GitHub(원격) main이 가리키는 Commit
+> - `HEAD -> main, origin/main`이 같은 줄에 있으면 로컬과 GitHub가 같은 상태
 
 - GitHub 저장소 페이지 새로고침
     - `index.html`, `about.html` 파일 확인
@@ -580,14 +550,10 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **5단계: Clone**
 
-<aside>
-📌
-
-**명령어 정리**
-
-- `git clone <주소> <폴더이름>` : 원격 저장소 전체(파일 + Commit 이력 + origin 연결)를 지정한 폴더로 복제
-- 폴더 이름을 생략하면 저장소 이름(`kcu-git-lab`)으로 폴더가 만들어짐
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git clone <주소> <폴더이름>` : 원격 저장소 전체(파일 + Commit 이력 + origin 연결)를 지정한 폴더로 복제
+> - 폴더 이름을 생략하면 저장소 이름(`kcu-git-lab`)으로 폴더가 만들어짐
 
 - 새 개발자 PC라고 가정하고, 다른 폴더(`clone-lab`)에 저장소 복제
     
@@ -604,14 +570,10 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **6단계: Pull**
 
-<aside>
-📌
-
-**명령어 정리**
-
-- `git pull` : GitHub에 새로 생긴 Commit을 가져와 현재 브랜치에 합치기
-- Push는 올리기(로컬 → GitHub), Pull은 받기(GitHub → 로컬)
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git pull` : GitHub에 새로 생긴 Commit을 가져와 현재 브랜치에 합치기
+> - Push는 올리기(로컬 → GitHub), Pull은 받기(GitHub → 로컬)
 
 - GitHub 웹에서 원격 저장소 변경 (다른 개발자가 Push한 상황)
     - **[Add file]** → **Create new file**
@@ -630,15 +592,11 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **7단계: Branch Push와 Pull Request (feature-contact branch 생성)**
 
-<aside>
-📌
-
-**명령어 정리**
-
-- `git switch -c feature-contact` : 작업용 브랜치 생성 후 이동
-- `git push -u origin feature-contact` : 새 브랜치를 GitHub에 올리기
-- Pull Request : 내 브랜치를 main에 합쳐 달라고 GitHub에서 검토를 요청하는 기능
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git switch -c feature-contact` : 작업용 브랜치 생성 후 이동
+> - `git push -u origin feature-contact` : 새 브랜치를 GitHub에 올리기
+> - Pull Request : 내 브랜치를 main에 합쳐 달라고 GitHub에서 검토를 요청하는 기능
 
 - 새 Branch에서 파일 추가 후 GitHub로 Push
     
@@ -680,14 +638,10 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ### **8단계: Merge 후 로컬 반영**
 
-<aside>
-📌
-
-**명령어 정리**
-
-- [Merge pull request] : GitHub에서 브랜치를 main에 합치기 (GitHub의 main만 바뀜)
-- `git switch main` → `git pull` : GitHub에서 합쳐진 결과를 내 PC의 main에도 반영
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - [Merge pull request] : GitHub에서 브랜치를 main에 합치기 (GitHub의 main만 바뀜)
+> - `git switch main` → `git pull` : GitHub에서 합쳐진 결과를 내 PC의 main에도 반영
 
 - Pull Request 화면 → **[Merge pull request]** → **[Confirm merge]**
     
@@ -707,7 +661,7 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
 ---
 
-### 리소스 삭제
+### 참고: 리소스 삭제 - 11주차 수업위해 삭제하지 않습니다.
 
 - 내 PC의 Git 저장소 (Git Bash)
     - **VSCode에서 폴더 닫기 :** 메뉴 → **File → Close Folder** 를 선택
