@@ -52,7 +52,7 @@
 > - `where.exe git` : git 실행 파일이 설치된 위치 확인
 
 - Git 설치 중 VSCode가 열려 있었다면 **완전히 종료한 후 다시 실행**
-- VSCode 메뉴 **Terminal → New Terminal** (단축키 `Ctrl + \``)
+- VSCode 메뉴 **Terminal → New Terminal** (단축키 `` Ctrl + ` ``)
 - Git 버전 확인
     
     ```bash
@@ -131,8 +131,8 @@
 - Commit 작성자 정보 등록 (본인 이름과 **GitHub 가입 이메일**로 변경해서 입력)
     
     ```bash
-    git config --global user.name "Seongmi Lee"
-    git config --global user.email "seongmi.lee@kcu.ac"
+    git config --global user.name "Hong Gildong"
+    git config --global user.email "you@example.com"
     ```
     
 - 새 저장소의 기본 Branch 이름을 `main`으로 지정
@@ -148,9 +148,9 @@
     ```
     
     ```
-    core.editor="C:\Users\seong\AppData\Local\Programs\Microsoft VS Code\bin\code" --wait
-    user.name=Seongmi Lee
-    user.email=seongmi.lee@kcu.ac
+    core.editor="C:\Users\사용자이름\AppData\Local\Programs\Microsoft VS Code\bin\code" --wait
+    user.name=Hong Gildong
+    user.email=you@example.com
     init.defaultbranch=main
     ```
     
@@ -162,9 +162,9 @@
 - https://github.com → **[Sign up]**
 - 이메일 · 비밀번호 · Username 입력 → 이메일 인증 코드 입력 → 가입 완료
     - username: **`seongmi-lee`**
-    - email: `seongmi.lee@kuc.ac`
+    - email: `seongmi.lee@kcu.ac`
 - **Username**은 저장소 주소에 사용되므로 기억해 둡니다.
-    - 예: `https://github.com/<seongmi-lee>/kcu-git-lab`
+    - 예: `https://github.com/<Username>/kcu-git-lab`
 
 > **Mac 사용자**: 터미널에서 `git --version` 입력 → Command Line Tools 설치 창이 뜨면 **[설치]**. PATH 설정(4단계)과 Git Bash 지정(5단계)은 필요 없으며, 6단계부터 진행합니다.
 > 
@@ -175,11 +175,11 @@
 
 ---
 
-> 모든 명령은 **VSCode 터미널(Git Bash)** 에서 실행합니다. 
-git add, git diff, git status, git commit, git log 등 기본 명령어 사용을 학습한다.
-버전관리 실습 - main branch외 feature branch를 생성하여 변경 사항을 기록. 이후  main branch로 병합
-main branch (index.html) → feature branch(index.html) - marge
-> 
+> 모든 명령은 **VSCode 터미널(Git Bash)** 에서 실행합니다.
+> - `git add`, `git diff`, `git status`, `git commit`, `git log` 등 기본 명령어 사용을 학습합니다.
+> - main 브랜치 외에 feature 브랜치를 만들어 변경 사항을 기록한 뒤, main 브랜치로 병합(merge)합니다.
+> - main 브랜치(index.html) → feature 브랜치(index.html 수정) → merge
+
 
 ### **1단계: 실습 폴더와 저장소 생성**
 
@@ -300,7 +300,7 @@ main branch (index.html) → feature branch(index.html) - marge
 > [!NOTE]
 > 📌**명령어 정리**
 > - `git log` : Commit 이력 자세히 보기 (Commit ID, 작성자, 날짜, 메시지)
->  `git log --oneline` : Commit 이력을 한 줄씩 간단히 보기 (최신 Commit이 맨 위)
+> - `git log --oneline` : Commit 이력을 한 줄씩 간단히 보기 (최신 Commit이 맨 위)
 
 - 새 파일 추가 후 세 번째 Commit
     
@@ -379,12 +379,11 @@ main branch (index.html) → feature branch(index.html) - marge
 
 ---
 
-> 2강에서 관리중인 로컬 저장소를 github 원격 저장소와 연동
-- github 인증 token 생성 및 repository 생성 
-local PC에서 관리하는 git 파일을 github repository에 push - main
-local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 push
-- github 에서 main branch로 병합
-> 
+> 2강에서 관리 중인 로컬 저장소를 GitHub 원격 저장소와 연동합니다.
+> - GitHub 인증 Token 생성 및 Repository 생성
+> - 로컬 PC의 Git 저장소를 GitHub Repository에 push (main)
+> - 로컬 PC에서 `feature-contact` 브랜치 생성, `contact.html` 생성 후 push
+> - GitHub에서 Pull Request로 main 브랜치에 병합 
 
 ### **1단계: GitHub 준비 (Token 생성 · Repository 생성)**
 
@@ -507,7 +506,7 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
 
         <img width="618" height="479" alt="Image" src="https://github.com/user-attachments/assets/bad3d5d2-cd59-4960-8285-80c67ea9bf6f" />
 
-    - 브라우저에서 다음 주소 오픈: https://github.com/login/device    
+    - **또는 [Sign in with a code] 를 선택한 경우** : 표시된 8자리 코드를 복사 → 브라우저에서 https://github.com/login/device 접속 → 코드 입력 → [Authorize]
   
         <img width="504" height="399" alt="Image" src="https://github.com/user-attachments/assets/b05a625c-de73-4d96-883b-bf865d934e6c" />
         
@@ -523,7 +522,7 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
         > 💡 인증 창이 뜨지 않고 `403` 또는 `Permission ... denied to <다른계정>` 오류가 나면, PC에 저장된 다른 GitHub 계정 정보 때문입니다. 
         Windows 검색 → **자격 증명 관리자** → **Windows 자격 증명** → `git:https://github.com` 제거 후 다시 push합니다.
         > 
-    - github reposiotry 에 업로드된 파일 확인
+    - GitHub Repository에 업로드된 파일 확인
         
         <img width="935" height="574" alt="Image" src="https://github.com/user-attachments/assets/13b71ce7-dff2-4251-b69e-506b63d2c5cf" />
         
@@ -614,7 +613,7 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
     ```
     
 - GitHub 저장소 화면 → **[Compare & pull request]**
-    - 새 브랜치 feature-conact 를 push하면 github에는 [Compare & pull request]가 표시됨.
+    - 새 브랜치 feature-contact를 push하면 github에는 [Compare & pull request]가 표시됨.
     - 이는 현재 브랜치에서 바꾼 내용을 main에 합쳐 달라고 요청서를 만드는 것이다.
     
     <img width="1235" height="249" alt="image" src="https://github.com/user-attachments/assets/cd5772e1-b88c-4a5e-9d22-702e53ad7bad" />
@@ -624,13 +623,13 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
     - 제목:  Add contact page
     - 설명:
         
-        ```bash
+        ````markdown
         ## 변경 내용
         - 연락처 페이지(contact.html) 추가
         
         ## 확인 방법
         - contact.html 파일이 추가되었는지 Files changed 탭에서 확인
-        ```
+        ````
         
     
     <img width="1894" height="1022" alt="Image" src="https://github.com/user-attachments/assets/2587aa29-00ce-4127-a33c-cd511785dd3b" />
