@@ -161,8 +161,6 @@
 - github: git 저장소를 인터넷에 올려 다른 사람과 공유하게 해주는 서비스
 - https://github.com → **[Sign up]**
 - 이메일 · 비밀번호 · Username 입력 → 이메일 인증 코드 입력 → 가입 완료
-    - username: **`seongmi-lee`**
-    - email: `seongmi.lee@kcu.ac`
 - **Username**은 저장소 주소에 사용되므로 기억해 둡니다.
     - 예: `https://github.com/<Username>/kcu-git-lab`
 
@@ -372,6 +370,12 @@
     git merge feature
     cat index.html
     ```    
+
+- Branch 이력 그래프 확인 → `(HEAD -> main, feature)`가 같은 줄에 표시
+
+    ```bash
+    git log --oneline --graph --all
+    ```
 
 ---
 
