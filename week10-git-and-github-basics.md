@@ -46,12 +46,10 @@
 
 ### **3단계: 설치 확인**
 
-<aside>
-📌**명령어 정리**
-
-- `git --version` : 설치된 Git 버전 확인 (버전이 나오면 설치 완료)
-- `where.exe git` : git 실행 파일이 설치된 위치 확인
-</aside>
+> [!NOTE]
+> 📌**명령어 정리**
+> - `git --version` : 설치된 Git 버전 확인 (버전이 나오면 설치 완료)
+> - `where.exe git` : git 실행 파일이 설치된 위치 확인
 
 - Git 설치 중 VSCode가 열려 있었다면 **완전히 종료한 후 다시 실행**
 - VSCode 메뉴 **Terminal → New Terminal** (단축키 `Ctrl + \``)
