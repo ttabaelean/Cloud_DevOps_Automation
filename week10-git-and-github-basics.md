@@ -384,51 +384,19 @@
 ---
 
 > 2강에서 관리 중인 로컬 저장소를 GitHub 원격 저장소와 연동합니다.
-> - GitHub 인증 Token 생성 및 Repository 생성
+> - GitHub Repository 생성
 > - 로컬 PC의 Git 저장소를 GitHub Repository에 push (main)
 > - 로컬 PC에서 `feature-contact` 브랜치 생성, `contact.html` 생성 후 push
 > - GitHub에서 Pull Request로 main 브랜치에 병합 
 
-### **1단계: GitHub 준비 (Token 생성 · Repository 생성)**
+### **1단계: GitHub 준비 (Repository 생성)**
 
 > [!NOTE]
 > 📌 **용어 정리**
-> - `Personal Access Token(PAT)` : Git 명령으로 GitHub에 접근할 때 **비밀번호 대신** 사용하는 인증 문자열
-> - GitHub는 `git push` 할 때 계정 비밀번호 로그인을 지원하지 않으므로 토큰이 필요함
-> - `Scope(권한 범위)` : 토큰으로 할 수 있는 일의 범위 (`repo` : 저장소 읽기·쓰기, `workflow` : GitHub Actions 파일 수정)
 > - `Repository` : GitHub에 만드는 프로젝트 저장 공간 (2강의 로컬 저장소를 올릴 빈 저장소)
+> - GitHub 인증 : 3단계 첫 push 때 뜨는 로그인 창에서 GitHub 계정으로 한 번만 승인 (PC에 저장되어 이후 자동 인증)
 
-#### **① Personal Access Token 생성**
-
-- GitHub 로그인 → 오른쪽 위 **프로필 사진** → **Settings**
-- 왼쪽 메뉴 맨 아래 **Developer settings** → **Personal access tokens** → **Tokens (classic)**
-- **[Generate new token]** → **Generate new token (classic)**
-    - 본인 확인 창이 뜨면 GitHub 비밀번호 또는 인증 코드 입력
-- 토큰 설정
-    
-    
-    | 항목 | 설정 |
-    | --- | --- |
-    | Note | `kcu-git-lab-token` |
-    | Expiration | `90 days` (학기 중 계속 사용) |
-    | Select scopes | ☑ `repo` , ☑ `workflow` |
-    
-    <img width="1151" height="700" alt="Image" src="https://github.com/user-attachments/assets/26e6438a-1556-495a-9d3a-6a06ddfbd430" />
-    
-- 맨 아래 **[Generate token]** 클릭
-- 생성된 토큰(`ghp_`로 시작)을 **바로 복사**해서 메모장 등에 보관
-    
-    ```
-    ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    ```
-    
-    > ⚠️ 토큰은 생성 화면에서 **한 번만** 보입니다. 페이지를 벗어나면 다시 볼 수 없으므로 반드시 복사해 둡니다. 토큰은 비밀번호와 같으므로 다른 사람과 공유하거나 파일에 적어 Commit하지 않습니다.
-    > 
-    
-    > 💡 `workflow` 권한은 11주차 GitHub Actions 실습에서 `.github/workflows` 파일을 push할 때 필요합니다. 토큰을 잃어버렸거나 만료되면 같은 방법으로 새로 만들면 됩니다.
-    > 
-
-#### **② GitHub Repository 생성**
+#### **GitHub Repository 생성**
 
 - GitHub 로그인 → 오른쪽 위 **[+]** → **New repository**
     - Repository name : `kcu-git-lab`
@@ -487,7 +455,7 @@
 > - `git branch -M main` : 현재 브랜치 이름을 main으로 변경 (master인 경우만)
 > - `git push -u origin main` : 로컬 main의 Commit을 origin(GitHub)으로 전송 (`-u` : 이 연결을 기억)
 > - `git push` : 두 번째부터는 이것만 입력
-> - 인증 : 비밀번호 대신 **1단계에서 만든 Personal Access Token** 사용
+> - 인증 : 첫 push 때 로그인 창에서 GitHub 계정으로 승인 (한 번만)
 
 
 - 현재 Branch가 `main`인지 확인
@@ -503,14 +471,14 @@
     git push -u origin main
     ```
     
-- 인증 창이 뜨면 **1단계에서 만든 토큰**으로 로그인
-    - **Windows** (Git Credential Manager 창) : **Token** 항목 선택 → 토큰 붙여넣기 → **[Sign in]**
+- 로그인 창(Git Credential Manager)이 뜨면 GitHub 계정으로 인증
+    - **Windows** : 로그인 창에서 **[Sign in with a code]** 선택 → 8자리 코드 표시됨
         
         <img width="627" height="548" alt="Image" src="https://github.com/user-attachments/assets/3d0b93d0-2007-4a97-b89b-1e29142805a8" />
 
         <img width="618" height="479" alt="Image" src="https://github.com/user-attachments/assets/bad3d5d2-cd59-4960-8285-80c67ea9bf6f" />
 
-    - **또는 [Sign in with a code] 를 선택한 경우** : 표시된 8자리 코드를 복사 → 브라우저에서 https://github.com/login/device 접속 → 코드 입력 → [Authorize]
+    - 코드를 복사 → 브라우저에서 https://github.com/login/device 접속 (본인 계정으로 로그인 상태 확인) → 코드 입력 → **[Continue]** → **[Authorize]**
   
         <img width="504" height="399" alt="Image" src="https://github.com/user-attachments/assets/b05a625c-de73-4d96-883b-bf865d934e6c" />
         
@@ -520,7 +488,8 @@
         
     - **터미널에서 직접 묻는 경우 (Mac 등)**
         - `Username` : GitHub Username 입력
-        - `Password` : GitHub 비밀번호가 아닌 **토큰** 붙여넣기 (입력해도 화면에 표시되지 않음)
+        - `Password` : GitHub 비밀번호가 아닌 **Personal Access Token** 붙여넣기 (문서 끝 "참고: Mac 사용자용 토큰 발급" 참고)
+        - 
     - 한 번 인증하면 PC에 저장되어 다음 push부터는 다시 묻지 않음
         
         > 💡 인증 창이 뜨지 않고 `403` 또는 `Permission ... denied to <다른계정>` 오류가 나면, PC에 저장된 다른 GitHub 계정 정보 때문입니다. 
@@ -682,5 +651,23 @@
     
 - github repository 삭제
     - `https://github.com/<username>/kcu-git-lab`에 접속
+
+
+---
+
+### 참고: Mac 사용자용 토큰(PAT) 발급
+
+> Windows는 로그인 창으로 인증되므로 필요 없습니다. Mac처럼 터미널에서 Password를 물을 때만 사용합니다.
+
+- GitHub → 오른쪽 위 **프로필 사진** → **Settings** → 왼쪽 맨 아래 **Developer settings**
+- **Personal access tokens** → **Tokens (classic)** → **[Generate new token (classic)]**
+    - Note : `kcu-git-lab-token`
+    - Expiration : `90 days`
+    - Select scopes : ☑ `repo` , ☑ `workflow`
+
+    <img width="1151" height="700" alt="Image" src="https://github.com/user-attachments/assets/26e6438a-1556-495a-9d3a-6a06ddfbd430" />
+
+- **[Generate token]** → 생성된 토큰(`ghp_…`)을 바로 복사해서 보관 (한 번만 표시됨)
+- `git push` 할 때 `Password` 자리에 토큰 붙여넣기
     - 위쪽 **Settings** 탭 → 맨 아래 **Danger Zone** → **Delete this repository**를 누릅니다.
     - 확인 창에서 저장소 이름 `<username>/kcu-git-lab`을 입력하고 삭제합니다.
