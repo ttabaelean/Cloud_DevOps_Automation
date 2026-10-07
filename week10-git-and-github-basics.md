@@ -504,7 +504,11 @@ local PC에서 feature-contact 브랜치 생성, contect.html 문서 생성 후 
     - **Windows** (Git Credential Manager 창) : **Token** 항목 선택 → 토큰 붙여넣기 → **[Sign in]**
         
         <img width="627" height="548" alt="Image" src="https://github.com/user-attachments/assets/3d0b93d0-2007-4a97-b89b-1e29142805a8" />
-        
+
+        <img width="618" height="479" alt="Image" src="https://github.com/user-attachments/assets/bad3d5d2-cd59-4960-8285-80c67ea9bf6f" />
+
+    - 브라우저에서 다음 주소 오픈: https://github.com/login/device    
+  
         <img width="504" height="399" alt="Image" src="https://github.com/user-attachments/assets/b05a625c-de73-4d96-883b-bf865d934e6c" />
         
         <img width="504" height="537" alt="Image" src="https://github.com/user-attachments/assets/6f5ce07f-050b-4379-9063-3456a98598c6" />
