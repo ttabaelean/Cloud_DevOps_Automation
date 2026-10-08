@@ -1,28 +1,42 @@
 
-# 11주차 Hands-on Labs: GitHub Actions를 활용한 CI 파이프라인 구축
 
-> **학습 목표**: GitHub 저장소에 코드를 Push하면 GitHub Actions가 자동으로 실행되어 Docker 이미지를 빌드하고 Amazon ECR에 저장하는 CI 파이프라인을 구성합니다.
+# 11주차 Hands-on Labs: GitHub Actions를 활용한 CI 파이프라인 구축
 
 ## 실습 환경
 
 | 항목 | 구성 |
 |---|---|
-| 실습 PC | Windows 10/11, VSCode 터미널(Git Bash) |
-| 로컬 / 원격 저장소 | `~/kcu-git-lab` / GitHub `kcu-git-lab` (10주차 실습 연계) |
-| Runner | GitHub-hosted `ubuntu-latest` |
-| Workflow | `.github/workflows/` (`hello.yml` → `docker-build.yml` → `container-ci.yml`) |
-| AWS | 서울 리전 `ap-northeast-2`, ECR 리포지토리 `webapp` |
+| 실습 PC | Windows 10/11 + VSCode 터미널(Git Bash) |
+| 실습 저장소 | 로컬 `~/kcu-git-lab` ↔ GitHub `kcu-git-lab` (10주차 저장소) |
+| Runner | GitHub-hosted Runner `ubuntu-latest` |
+| Workflow 파일 | `.github/workflows/` (`hello.yml` → `docker-build.yml` → `container-ci.yml`) |
+| AWS | Region `ap-northeast-2` / ECR Repository `webapp` |
 
-> [!IMPORTANT]
-> 내 PC에 Docker를 설치할 필요는 없습니다. Docker Build 및 Push는 GitHub Runner에서 실행합니다. AWS Access Key를 소스 파일이나 Git 저장소에 기록하거나 Commit하지 마세요.
+> [!WARNING]
+> 내 PC에는 Docker를 설치하지 않아도 됩니다. Docker Build·Push는 모두 GitHub의 Runner에서 실행됩니다.
+>
+> 3강에서 만드는 **AWS Access Key는 절대 파일에 적거나 Commit하지 않습니다.**
 
 ---
 
-## 11주 1강. 첫 번째 GitHub Actions Workflow 실행
+## 11주 1강 Hands-on Labs : 첫 번째 GitHub Actions Workflow 실행
 
-**실습 흐름**: Workflow 작성 → Git Commit & Push → GitHub Push Event → Runner 실행 → Actions 로그 확인
+> 10주차 `kcu-git-lab` 저장소에 가장 간단한 Workflow(`hello.yml`)를 추가하고 Push
+>
+> Push 이벤트로 GitHub Actions가 자동 실행되는 것을 Actions 탭에서 확인
+>
+> local PC(hello.yml 작성) → git push → GitHub(Push Event) → Runner(ubuntu) 실행
 
-### 1단계. 실습 저장소 준비
+### 1단계: 실습 저장소 준비
+
+> [!NOTE]
+> **명령어 정리**
+>
+> - `git switch main` : main 브랜치로 이동
+> - `git pull` : GitHub의 최신 Commit을 내 PC로 가져오기
+> - `git clone <주소>` : 로컬 폴더가 없을 때 GitHub 저장소를 새로 복제
+
+- 저장소로 이동 후 최신 상태로 맞추기
 
 ```bash
 cd ~/kcu-git-lab
@@ -32,23 +46,33 @@ ls
 git status
 ```
 
-정상 상태 예시:
-
 ```text
 On branch main
 Your branch is up to date with 'origin/main'.
+
 nothing to commit, working tree clean
 ```
 
-> [!NOTE]
-> - `git switch main`: main 브랜치로 이동
-> - `git pull`: 원격 저장소의 변경 사항을 가져와 현재 브랜치에 반영
-> - 로컬 저장소가 없다면 `git clone <저장소 URL>`로 복제한 후 폴더로 이동합니다.
+### 2단계: Workflow 파일 작성 (hello.yml)
 
-### 2단계. Workflow 파일 작성 (`hello.yml`)
+> [!NOTE]
+> **용어 정리**
+>
+> - `.github/workflows/` : GitHub가 Workflow 파일을 찾는 위치 (폴더 이름이 정확해야 실행됨)
+> - `name` : Workflow 이름 (Actions 탭에 표시)
+> - `on: push` : 실행 조건(Event) — 모든 브랜치의 push
+> - `jobs` → `runs-on` : 작업 단위와 실행 환경(Runner)
+> - `steps` → `uses` : 만들어진 Action 사용 / `run` : 명령어 직접 실행
+
+- Workflow 폴더 생성
 
 ```bash
 mkdir -p .github/workflows
+```
+
+- `hello.yml` 작성
+
+```bash
 cat > .github/workflows/hello.yml << 'EOF'
 name: Hello CI
 
@@ -58,24 +82,33 @@ on:
 jobs:
   hello:
     runs-on: ubuntu-latest
+
     steps:
+      # 저장소 코드를 Runner(가상 머신)로 가져오기
       - name: Checkout
         uses: actions/checkout@v4
+
+      # 인사 문구를 로그에 출력
       - name: Hello
         run: echo "Hello GitHub Actions"
 EOF
+```
 
+- 파일 확인
+
+```bash
 cat .github/workflows/hello.yml
 ```
 
-> [!NOTE]
-> - `.github/workflows/`: GitHub Actions Workflow 파일 위치
-> - `name`: Actions 탭에 표시할 Workflow 이름
-> - `on: push`: 모든 브랜치의 Push 이벤트에 반응
-> - `jobs`: 실행할 작업 정의 / `runs-on`: Runner 지정
-> - `uses`: 준비된 Action 사용 / `run`: Runner에서 명령어 실행
+### 3단계: Commit & Push
 
-### 3단계. Commit & Push
+> [!NOTE]
+> **명령어 정리**
+>
+> - `git add` → `git commit` → `git push` : 10주차와 같은 흐름
+> - push가 곧 GitHub Actions의 **Event**가 됨
+
+- Workflow 파일을 Commit 후 GitHub로 Push
 
 ```bash
 git add .github/workflows/hello.yml
@@ -83,36 +116,72 @@ git commit -m "Add hello workflow"
 git push
 ```
 
+### 4단계: Actions 탭에서 실행 결과 확인
+
 > [!NOTE]
-> `git add` → `git commit` → `git push` 순서로 변경 내용을 GitHub에 올립니다. Push 자체가 Workflow 실행 이벤트가 됩니다.
+> **확인 포인트**
+>
+> - 🟡 노란 원 : 실행 중 / ✅ 초록 체크 : 성공 / ❌ 빨간 X : 실패
+> - `Set up job` · `Complete job` 은 GitHub가 자동으로 추가하는 Step (Runner 준비·정리)
 
-### 4단계. Actions 탭에서 실행 결과 확인
+- GitHub 저장소 → **Actions** 탭 → **Hello CI** → 실행 항목(Commit 메시지 `Add hello workflow`) 클릭
+- **hello** Job 클릭 → Step이 모두 성공했는지 확인
 
-1. GitHub `kcu-git-lab` → **Actions** → **Hello CI**로 이동합니다.
-2. `Add hello workflow` 실행 항목 → **hello** Job을 선택합니다.
-3. `Checkout`, `Hello` Step의 성공 여부와 `Hello` 로그를 확인합니다.
+```text
+✅ Set up job
+✅ Checkout
+✅ Hello
+✅ Post Checkout
+✅ Complete job
+```
+
+- **Hello** Step을 펼쳐 로그 확인
 
 ```text
 Hello GitHub Actions
 ```
 
+### 5단계: Workflow 수정 후 자동 실행 다시 확인
+
 > [!NOTE]
-> - 노란색: 실행 중 / 초록색 체크: 성공 / 빨간색 X: 실패
-> - `Set up job`, `Complete job` 등은 GitHub가 자동 수행하는 준비·정리 단계입니다.
+> **용어 정리**
+>
+> - `${{ github.ref_name }}` : Workflow를 실행시킨 브랜치 이름
+> - `${{ github.sha }}` : Workflow를 실행시킨 Commit ID (3강에서 이미지 Tag로 사용)
+> - `run: |` : 여러 줄 명령을 차례로 실행
 
-### 5단계. Workflow 수정 후 자동 실행 재확인
+- `hello.yml` 맨 아래에 **Show Info** Step을 추가해 파일을 다시 작성 (VSCode에서 직접 추가해도 됨, `- name` 들여쓰기는 위 Step과 같은 6칸)
 
-`hello.yml`의 `steps` 아래에 `Show Info` Step을 추가합니다. (VSCode 또는 `vi` 사용)
-
-```yaml
-      - name: Show Info
-        run: |
-          echo "Branch : ${{ github.ref_name }}"
-          echo "Commit : ${{ github.sha }}"
+```bash
+vi .github/workflows/hello.yml
 ```
 
-> [!IMPORTANT]
-> 위 코드는 **기존 `steps` 아래에 추가**합니다. `- name: Show Info`의 들여쓰기는 `- name: Hello`와 같아야 합니다.
+```yaml
+name: Hello CI
+
+on:
+  push:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      # 저장소 코드를 Runner(가상 머신)로 가져오기
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 인사 문구를 로그에 출력
+      - name: Hello
+        run: echo "Hello GitHub Actions"
+
+      # 추가-실행을 일으킨 브랜치 이름과 Commit ID 출력
+      - name: Show Info
+        run: |
+          echo "Branch : ${{ github.ref_name }}" # 브랜치 ID
+          echo "Commit : ${{ github.sha }}" # Commit ID
+```
+
+- 저장 후 Push → Actions 탭에 **새 실행 항목이 자동으로 추가**되는지 확인
 
 ```bash
 git add .
@@ -120,70 +189,107 @@ git commit -m "Add show info step"
 git push
 ```
 
-Actions → **Hello CI** → **Show Info** 로그에서 브랜치와 Commit ID를 확인하고 다음 명령의 결과와 비교합니다.
+- **Show Info** Step 로그 확인 → 로컬 Commit ID와 비교
+
+```text
+Branch : main                   <- Workflow를 실행시킨 브랜치 이름 (github.ref_name)
+Commit : 3f9c1a7e...(40자리)     <- Workflow를 실행시킨 Commit ID (github.sha), 아래 git log 결과와 같아야 함
+```
 
 ```bash
 git log -1 --format=%H
 ```
 
-> [!NOTE]
-> - `${{ github.ref_name }}`: 실행을 유발한 브랜치 이름
-> - `${{ github.sha }}`: 실행과 연결된 Commit SHA (3강에서 Docker 이미지 태그로 사용)
-> - `run: |`: 여러 줄 명령을 실행
-
 ---
 
-## 11주 2강. Docker 이미지 Build Workflow 작성
+## 11주 2강 Hands-on Labs : Docker 이미지 Build Workflow 작성
 
-**실습 흐름**: Dockerfile 준비 → `main`에 Push → Runner에서 Docker Build → 브랜치 조건 확인
+> Dockerfile(httpd 기반)과 index.html을 준비하고, main 브랜치에 push하면 Runner가 Docker 이미지를 자동으로 Build
+>
+> docker-build.yml : Checkout → Docker 확인 → Docker Build
+>
+> feature 브랜치 push로 `branches: main` 조건 동작 확인
 
-### 1단계. 저장소 구조 확인
+### 1단계: 저장소 구조 확인
+
+> [!NOTE]
+> **명령어 정리**
+>
+> - `ls -a` : 숨김 파일·폴더까지 포함해 목록 보기
+> - `find . -path ./.git -prune -o -type f -print` : `.git` 을 제외한 전체 파일 목록
+
+- 현재 저장소 파일 확인
 
 ```bash
 cd ~/kcu-git-lab
+
 ls
+```
+
+```text
+about.html  contact.html  index.html  README.md
+```
+
+```bash
 ls .github/workflows/
 ```
 
-이번 강의에서 추가할 파일:
+```text
+hello.yml
+```
+
+- 이번 강의에서 추가할 파일
 
 ```text
 kcu-git-lab/
-├── Dockerfile
-├── index.html
+├── Dockerfile                    ← 추가
+├── index.html                    ← 수정
 └── .github/
     └── workflows/
         ├── hello.yml
-        └── docker-build.yml
+        └── docker-build.yml      ← 추가
 ```
 
-> [!NOTE]
-> `ls -a`: 숨김 파일 포함 목록 확인 / `find . -path ./.git -prune -o -type f -print`: `.git`을 제외한 파일 목록 확인
+### 2단계: Dockerfile 작성
 
-### 2단계. Dockerfile 작성
+> [!NOTE]
+> **용어 정리**
+>
+> - `FROM httpd:latest` : Apache 웹 서버 이미지를 기반으로 사용
+> - `COPY index.html /usr/local/apache2/htdocs/` : 웹 페이지를 Apache 문서 폴더로 복사
+> - `EXPOSE 80` : 컨테이너가 80번 포트를 사용함을 표시
+
+- Dockerfile 작성 (파일 이름 대소문자 주의 : `Dockerfile`)
 
 ```bash
 cat > Dockerfile << 'EOF'
 FROM httpd:latest
+
 COPY index.html /usr/local/apache2/htdocs/
+
 EXPOSE 80
 EOF
 ```
 
-> [!NOTE]
-> - `FROM httpd:latest`: Apache HTTP Server 기반 이미지
-> - `COPY`: 웹 페이지를 Apache 문서 디렉터리로 복사
-> - `EXPOSE 80`: 컨테이너의 서비스 포트 표시
-> - 파일 이름은 정확히 `Dockerfile`로 작성합니다.
+### 3단계: index.html 수정
 
-### 3단계. `index.html` 수정
+- 웹 페이지 내용 변경
 
 ```bash
 echo "<h1>GitHub Actions CI Lab</h1>" > index.html
 cat index.html
 ```
 
-### 4단계. Docker Build Workflow 작성 (`docker-build.yml`)
+### 4단계: Docker Build Workflow 작성 (docker-build.yml)
+
+> [!NOTE]
+> **용어 정리**
+>
+> - `on: push: branches: - main` : **main 브랜치에 push될 때만** 실행
+> - `docker --version` : Runner에 Docker가 이미 설치되어 있는지 확인
+> - `docker build -t webapp:latest .` : 현재 폴더의 Dockerfile로 `webapp:latest` 이미지 생성
+
+- `docker-build.yml` 작성
 
 ```bash
 cat > .github/workflows/docker-build.yml << 'EOF'
@@ -197,22 +303,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 저장소 코드(Dockerfile, index.html)를 Runner로 가져오기
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Runner에 Docker가 설치되어 있는지 버전 확인
       - name: Check Docker
         run: docker --version
+
+      # Dockerfile로 webapp:latest 이미지 빌드
       - name: Build Docker Image
         run: docker build -t webapp:latest .
 EOF
 ```
 
-> [!NOTE]
-> - `branches: - main`: main 브랜치에 Push할 때만 실행
-> - `docker --version`: Runner의 Docker 설치 여부 확인
-> - `docker build -t webapp:latest .`: 현재 디렉터리의 Dockerfile로 이미지 빌드
+### 5단계: Push
 
-### 5단계. Commit & Push
+- Dockerfile, index.html, Workflow를 함께 Commit 후 Push
 
 ```bash
 git add .
@@ -221,105 +330,142 @@ git commit -m "Add Docker build CI"
 git push
 ```
 
+> **참고**: `hello.yml` 도 `on: push` 이므로 이번 push에서는 **Hello CI와 Docker Build CI 두 개가 함께 실행**됩니다. Workflow 파일마다 따로 실행되는 것이 정상입니다.
+
+### 6단계: Actions 결과 확인
+
 > [!NOTE]
-> 기존 `hello.yml`은 모든 Push에 반응하므로 이번에는 **Hello CI와 Docker Build CI가 모두 실행**됩니다.
+> **확인 포인트**
+>
+> - Docker Build는 내 PC가 아니라 **GitHub-hosted Runner(Ubuntu)** 에서 실행됨
+> - Workflow가 끝나면 Runner가 삭제되므로 빌드한 이미지도 함께 사라짐 → 3강에서 ECR에 Push해 보관
 
-### 6단계. Actions 결과 확인
-
-GitHub → **Actions** → **Docker Build CI** → **build** Job에서 다음 Step을 확인합니다.
+- **Actions** 탭 → **Docker Build CI** → **build** Job
+- Step 성공 여부 확인 : Checkout → Check Docker → Build Docker Image
+- **Build Docker Image** 로그 마지막 부분 확인
 
 ```text
-Checkout → Check Docker → Build Docker Image
+#X naming to docker.io/library/webapp:latest done
 ```
 
-빌드 로그에서 `webapp:latest` 이미지가 생성되었는지 확인합니다.
+- **Workflow가 끝나면 Runner가 삭제되므로 빌드한 이미지도 함께 사라짐** → 3강에서 ECR에 Push해 보관
+
+### 7단계: 브랜치 조건(branches) 동작 확인
 
 > [!NOTE]
-> 이미지는 내 PC가 아니라 일회성 GitHub-hosted Runner에 생성됩니다. Workflow 종료 후 Runner가 제거되므로 3강에서 이미지를 ECR로 Push하여 보관합니다.
+> **확인 포인트**
+>
+> - feature 브랜치 push → `on: push` 인 **Hello CI만 실행**
+> - `branches: - main` 인 Docker Build CI는 실행되지 않음
 
-### 7단계. 브랜치 조건 동작 확인
+- feature 브랜치를 만들어 Push
 
 ```bash
 git switch -c feature-ci
 git branch
 
 echo "<p>feature test</p>" >> about.html
-cat about.html
+cat about.htm
 
 git add about.html
 git commit -m "Test feature branch"
 git push -u origin feature-ci
 ```
 
-Actions 탭에서 **Hello CI만 새로 실행**되고 **Docker Build CI는 실행되지 않는지** 확인합니다.
+- Actions 탭에서 **Hello CI만 새로 실행**되었는지 확인
+- main 브랜치로 돌아오기
 
 ```bash
 git switch main
 ```
-
-> [!NOTE]
-> `hello.yml`은 모든 브랜치의 Push에 반응하지만 `docker-build.yml`은 `main` Push에만 반응합니다. 이 실습에서 `feature-ci`를 `main`으로 병합하지 않습니다.
 
 ---
 
-## 11주 3강. GitHub Actions → Amazon ECR Push
+## 11주 3강 Hands-on Labs : GitHub Actions → Amazon ECR Push
 
-**실습 흐름**: AWS 인증 → ECR Login → Docker Build → Docker Push → ECR 이미지 확인
+> 2강 Workflow를 확장해 AWS 인증 → ECR Login → Docker Build → Docker Push까지 자동화
+>
+> - AWS : IAM 사용자 Access Key 생성, ECR Repository(webapp) 생성
+> - GitHub : Secrets에 Access Key 등록, container-ci.yml 작성
+>
+> index.html 수정 후 push → ECR에 Commit SHA 태그 이미지 확인
 
-### 1단계. AWS 준비 (IAM Access Key / ECR Repository)
+### 1단계: AWS 준비 (IAM Access Key · ECR Repository)
 
-**① IAM 사용자 및 Access Key 생성**
+> [!NOTE]
+> **용어 정리**
+>
+> - `IAM 사용자` : GitHub Actions가 AWS에 접근할 때 사용할 전용 계정
+> - `AmazonEC2ContainerRegistryPowerUser` : ECR 이미지 Push·Pull 권한 (삭제·관리 권한 제외)
+> - `Access Key ID` / `Secret Access Key` : 프로그램이 AWS에 로그인할 때 쓰는 아이디·비밀번호
+> - `ECR Repository` : Docker 이미지를 저장하는 AWS 저장소 (8주차 실습과 동일)
 
-1. AWS 콘솔 → **IAM** → **사용자** → **사용자 생성**
-2. 사용자 이름: `github-actions-ci` (콘솔 액세스 선택하지 않음)
-3. **직접 정책 연결** → `AmazonEC2ContainerRegistryPowerUser`
-4. 생성한 사용자 → **보안 자격 증명** → **액세스 키 만들기**
-5. 사용 사례 **AWS 외부에서 실행되는 애플리케이션** 선택 후 키 생성
-6. Access Key ID와 Secret Access Key를 안전하게 보관합니다.
+#### ① IAM 사용자와 Access Key 생성
 
-> [!WARNING]
-> **이 방식은 교육용입니다.** 장기 Access Key를 사용하는 대신 실무에서는 **GitHub OIDC + AWS IAM Role**을 사용하여 임시 자격 증명을 발급받는 구성을 권장합니다. 교육용 정책도 ECR 리포지토리별 최소 권한보다 넓습니다. Access Key는 Git 저장소에 저장하거나 Commit하지 않습니다.
+- AWS 콘솔 → **IAM** → **사용자** → **[사용자 생성]**
+  - 사용자 이름 : `github-actions-ci`
+  - AWS Management Console 액세스 : **선택하지 않음**
+- 권한 설정 → **직접 정책 연결** → `AmazonEC2ContainerRegistryPowerUser` 선택 → **[사용자 생성]**
 
-**② Amazon ECR Repository 생성**
+> ⚠️ 교육용 설정입니다. 이 정책은 계정의 모든 ECR 리포지토리에 권한을 주므로, 실무에서는 필요한 리포지토리로 범위를 좁힌 최소 권한을 적용해서 사용해야 합니다.
 
-1. AWS 콘솔에서 리전을 **서울 (`ap-northeast-2`)**로 설정합니다.
-2. **Amazon ECR** → **Private registry** → **Repositories** → **리포지토리 생성**
-3. 이름: `webapp` / 나머지는 기본값
-4. 생성 후 URI를 확인합니다.
+- 생성한 사용자 클릭 → **보안 자격 증명** 탭 → **[액세스 키 만들기]**
+  - 사용 사례 : **AWS 외부에서 실행되는 애플리케이션** → [다음] → [액세스 키 만들기]
+- **Access key ID** 와 **Secret access key** 를 복사하거나 **[.csv 파일 다운로드]**
+
+> ⚠️ Secret access key는 이 화면에서 **한 번만** 보입니다. 메모장 등에 잠시 보관하고, 저장소 폴더 안에 저장하거나 Commit하지 않습니다.
+
+#### ② ECR Repository 생성
+
+- AWS 콘솔 → 리전 **아시아 태평양(서울) ap-northeast-2** 확인
+- **Amazon ECR** → **Private registry** → **Repositories** → **[리포지토리 생성]**
+  - 리포지토리 이름 : `webapp`
+  - 나머지 설정은 기본값 → **[생성]**
+- 리포지토리 URI 확인
 
 ```text
+# 609417967491.dkr.ecr.ap-northeast-2.amazonaws.com/webapp
 123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/webapp
 ```
 
+### 2단계: GitHub Secrets 등록
+
 > [!NOTE]
-> 위 URI의 `123456789012`는 **예시 AWS 계정 ID**입니다. 실제 실습에서는 본인 계정의 URI를 사용합니다.
+> **용어 정리**
+>
+> - `Secrets` : 비밀번호·키를 GitHub에 암호화해 저장하는 기능 (등록 후에는 값을 다시 볼 수 없음)
+> - `${{ secrets.이름 }}` : Workflow에서 Secret 값을 꺼내 쓰는 방법 (로그에는 `***` 로 표시)
 
-### 2단계. GitHub Secrets 등록
+- GitHubb `kcu-git-lab`저장소 → **Settings** → **Secrets and variables** → **Actions** → **[New repository secret]**
+- 아래 2개를 각각 등록 (Name은 **대소문자까지 정확히** 입력)
 
-GitHub `kcu-git-lab` → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**에서 다음 두 값을 각각 등록합니다.
-
-| Name | 등록 값 |
+| Name | Secret |
 |---|---|
-| `AWS_ACCESS_KEY_ID` | IAM에서 생성한 Access Key ID |
-| `AWS_SECRET_ACCESS_KEY` | IAM에서 생성한 Secret Access Key |
+| `AWS_ACCESS_KEY_ID` | 1단계에서 만든 Access key ID |
+| `AWS_SECRET_ACCESS_KEY` | 1단계에서 만든 Secret access key |
+
+- **Repository secrets** 목록에 2개가 보이면 완료
+
+### 3단계: ECR Push Workflow 작성 (container-ci.yml)
 
 > [!NOTE]
-> - `${{ secrets.AWS_ACCESS_KEY_ID }}`처럼 Workflow에서 Secret을 참조합니다.
-> - 등록한 Secret 값은 GitHub UI에서 다시 조회할 수 없습니다.
-> - Secret 값은 로그에서 일반적으로 마스킹되지만, 의도적으로 출력하거나 변형해 노출하지 마세요.
+> **용어 정리**
+>
+> - `env` : Workflow 전체에서 쓰는 변수 (`${{ env.AWS_REGION }}`)
+> - `aws-actions/configure-aws-credentials@v5` : Secrets의 Access Key로 Runner에 AWS 인증 설정
+> - `aws-actions/amazon-ecr-login@v2` : ECR에 docker login (`id: login-ecr`)
+> - `${{ steps.login-ecr.outputs.registry }}` : ECR 주소 (`<계정ID>.dkr.ecr.ap-northeast-2.amazonaws.com`)
+> - `${{ github.sha }}` : 이미지 Tag로 사용할 Commit ID (40문자 전체)
 
-### 3단계. ECR Push Workflow 작성 (`container-ci.yml`)
-
-기존 학습용 Workflow 두 개를 삭제합니다.
+- 2강 Workflow를 확장한 파일이므로 기존 `docker-build.yml`, `hello.yml` 은 삭제
 
 ```bash
 cd ~/kcu-git-lab
-git switch main
 git rm .github/workflows/docker-build.yml
 git rm .github/workflows/hello.yml
 ```
 
-새 Workflow를 작성합니다.
+- `container-ci.yml` 작성
 
 ```bash
 cat > .github/workflows/container-ci.yml << 'EOF'
@@ -337,10 +483,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 저장소 코드(Dockerfile, index.html)를 Runner로 가져오기
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Secrets의 Access Key로 Runner에 AWS 인증 설정
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -348,117 +497,99 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      # ECR에 docker login
+      # 로그인에 성공하면 ECECR 레지스트리 주소를 login-ecr Step의 결과값(outputs.registry)으로 내보냄
+      # 예: 123456789012.dkr.ecr.ap-northeast-2.amazonaws.com
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # 이미지 빌드
+      # 123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/webapp:<Commit SHA>
       - name: Build Docker Image
         run: |
           docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
 
+      # 빌드한 이미지를 ECR webapp 리포지토리로 Push
       - name: Push Docker Image
         run: |
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 EOF
 ```
 
-> [!NOTE]
-> - `env`: Workflow에서 공통으로 사용하는 변수
-> - `configure-aws-credentials@v5`: Runner의 AWS 인증 설정
-> - `amazon-ecr-login@v2`: ECR 레지스트리 로그인
-> - `${{ steps.login-ecr.outputs.registry }}`: 로그인된 ECR 레지스트리 주소
-> - `${{ github.sha }}`: 40자리 Commit SHA를 이미지 태그로 사용
-> - **이 단계에서는 EKS에 배포하지 않습니다.**
+### 4단계: 소스 수정 후 Push (CI 실행)
 
-### 4단계. 소스 수정 후 Push (CI 실행)
+- index.html 수정
 
 ```bash
 echo "<h1>GitHub Actions CI Complete!</h1>" > index.html
 cat index.html
+```
 
+- Stage 후 **Commit 전에** 변경 내용 확인
+
+```bash
 git add .
 git status
 ```
 
-`git status`에서 새 Workflow, 기존 Workflow 삭제, `index.html` 수정이 Staging되었는지 확인합니다.
+```text
+Changes to be committed:
+        new file:   .github/workflows/container-ci.yml
+        deleted:    .github/workflows/docker-build.yml
+        modified:   index.html
+```
+
+- Commit & Push
 
 ```bash
 git commit -m "Add container CI to ECR"
 git push
 ```
 
+> **참고**: Commit 이후에 `git status` 를 다시 보면 `nothing to commit, working tree clean` 이 나오는 것이 정상입니다.
+>
+> **참고**: 이제 개발자는 push만 하고, Checkout → AWS 인증 → ECR Login → Docker Build → Docker Push는 GitHub Actions가 수행합니다.
+
+### 5단계: Actions 결과 확인
+
 > [!NOTE]
-> 이제 개발자는 Push만 하면 됩니다. Checkout → AWS 인증 → ECR Login → Docker Build → Docker Push는 GitHub Actions가 실행합니다.
+> **확인 포인트**
+>
+> - 5개 Step 모두 ✅ : Checkout → Configure AWS credentials → Login to Amazon ECR → Build → Push
+> - 로그에 Access Key 값은 `***` 로 가려져 표시됨
 
-### 5단계. Actions 결과 확인
-
-GitHub → **Actions** → **Container CI** → **build** Job을 열어 다음 다섯 Step이 성공했는지 확인합니다.
-
-```text
-Checkout
-Configure AWS credentials
-Login to Amazon ECR
-Build Docker Image
-Push Docker Image
-```
-
-Docker Push 성공 로그 예시:
+- **Actions** 탭 → **Container CI** → **build** Job → Step 확인
+- **Push Docker Image** 로그 마지막 줄 확인
 
 ```text
 <Commit SHA>: digest: sha256:xxxxxxxx... size: 2xxx
 ```
 
-> [!NOTE]
-> - `Credentials could not be loaded`: GitHub Secrets 이름과 등록 여부 확인
-> - `repository ... does not exist`: ECR 리포지토리 이름 및 리전 확인
-> - IAM 권한 오류: 사용자 정책과 인증 정보를 확인
+> 💡 `Credentials could not be loaded` 오류 : Secret 이름 오타 또는 미등록 → 2단계 재확인
+>
+> 💡 `name unknown: The repository with name 'webapp' does not exist` : ECR 리포지토리 이름·리전 확인 (ap-northeast-2)
 
-### 6단계. Amazon ECR에서 이미지 확인
+### 6단계: Amazon ECR에서 이미지 확인
 
-1. AWS 콘솔 → **Amazon ECR** → **Repositories** → `webapp` → **Images**
-2. 이미지 태그가 40자리 Commit SHA인지 확인합니다.
-3. 로컬 저장소의 최신 Commit SHA와 비교합니다.
+- AWS 콘솔 → **Amazon ECR** → **Repositories** → **webapp** → **Images**
+- 이미지 태그가 **Commit SHA(40자리)** 인지 확인
+- 로컬 최신 Commit ID와 비교 → 같은 값이면 "이 Commit으로 만든 이미지"임을 추적 가능
 
 ```bash
 git log -1 --format=%H
 ```
 
-> [!IMPORTANT]
-> **11주차 CI의 종료 지점은 Amazon ECR입니다.** EKS 배포를 위한 CD는 다음 주 Argo CD 실습에서 다룹니다.
+> **참고**: 11주차 CI는 **Amazon ECR까지**가 종료 지점입니다. EKS에 실제로 배포하는 CD는 다음 주 **Argo CD**에서 다룹니다.
 
 ---
 
-## 리소스 정리 (12주차 연계)
+### 리소스 정리 (12주차 연계)
 
-> [!IMPORTANT]
-> **11주차 종료 직후에는 ECR 이미지와 인증 설정을 삭제하지 않습니다.** 12주차 Argo CD / EKS 연계 실습에서 사용할 수 있도록 유지합니다. 단, 키가 노출된 것으로 의심되면 즉시 비활성화하고 교체합니다.
+> ⚠️ 11주차에 만든 ECR 이미지와 인증 설정은 **12주차 Argo CD · EKS 배포 실습까지 유지**합니다. 아래 삭제는 **12주차 실습이 끝난 뒤** 진행합니다.
 
-### 11주차 종료 시 유지
+- **유지할 리소스** : ECR `webapp` 리포지토리·이미지, IAM 사용자 `github-actions-ci` · Access Key, GitHub Secrets, Container CI Workflow
+  - 이미지 1개(수십 MB)를 보관하는 비용은 매우 적습니다.
+  - Access Key가 노출된 것 같으면 즉시 **IAM → 액세스 키 비활성화** 후 새 키를 발급해 Secrets를 다시 등록합니다.
 
-- ECR `webapp` 리포지토리 및 이미지
-- IAM 사용자 `github-actions-ci` 및 실습용 Access Key
-- GitHub Secrets 2개
-- GitHub `kcu-git-lab` 저장소 및 `container-ci.yml`
-
-### 12주차 실습 종료 후 정리
-
-1. GitHub **Actions** → **Container CI** → **···** → **Disable workflow**
-2. GitHub **Settings** → **Secrets and variables** → **Actions**에서 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` 삭제
-3. Amazon ECR → `webapp` 리포지토리 삭제 (저장된 이미지도 삭제됨)
-4. IAM → `github-actions-ci` → **보안 자격 증명**에서 Access Key **비활성화 후 삭제**
-5. 더 이상 사용하지 않는 IAM 사용자 `github-actions-ci` 삭제
-
-> [!WARNING]
-> GitHub `kcu-git-lab` 저장소와 Workflow 소스 파일은 이후 학습 자료로 활용할 수 있으므로 삭제하지 않습니다. 단, 비활성화한 Workflow를 다시 켜기 전에 AWS 인증 설정을 확인해야 합니다.
-
----
-
-## 학습 정리
-
-1. **GitHub Actions**는 GitHub Push 이벤트를 기준으로 Workflow를 자동 실행합니다.
-2. **GitHub-hosted Runner**는 Checkout 후 Docker Build를 수행하며, 실행 종료 후 작업 환경이 제거됩니다.
-3. **Container CI**는 AWS 인증 → ECR 로그인 → Docker Build → ECR Push를 자동화합니다.
-4. **Commit SHA 태그**를 사용하면 Docker 이미지와 소스 코드 버전을 연결해 추적할 수 있습니다.
-5. **CI와 CD의 역할은 다릅니다.** 이번 주는 ECR 이미지 저장까지, 다음 주는 Argo CD를 이용한 배포를 학습합니다.
-
-**원본 실습 노트**: [11주차 Notion](https://app.notion.com/p/11-GitHub-Actions-CI-3ef827652f2881acb4dbeee2601d3603)
+> ⚠️ GitHub `kcu-git-lab` 저장소와 Workflow 파일은 **다음 주 Argo CD 실습에서 계속 사용**하므로 삭제하지 않습니다.
