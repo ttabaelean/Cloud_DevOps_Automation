@@ -468,7 +468,7 @@ webapp-xxxxxxxxxx-ccccc   1/1   Running
 ### 3단계: Self-Heal 확인 (CloudShell)
 
 - **Self-Heal : Argo CD가 Drift를 감지해 Git에 선언된 상태로 되돌림**
-- **결과 : 클러스터 변경은 반드시 Git을 통해서만 가능**
+- **결과 : 클러스터에서 직접 변경한 내용은 자동 복구되므로, 지속적으로 유지할 변경 사항은 Git을 통해 관리해야 함**
 
 - kubectl로 직접 Pod 개수 변경 → Drift 발생(**Git과 클러스터가 달라진 상태**)
 
