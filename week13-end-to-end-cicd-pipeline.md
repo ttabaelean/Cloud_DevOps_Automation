@@ -272,7 +272,7 @@ cd kcu-petclinic
 # 원본 PetClinic에 포함된 github 구성 정보 삭제
 rm -rf .git .github
 
-# 현재 폴더를 새로운 Git 저장소로 만들고, Origin 브랜치 이름을 main으로 지정
+# 현재 폴더를 새로운 Git 저장소로 만들고, 기본 브랜치 이름을 main으로 지정
 git init -b main
 ls
 code -r .
